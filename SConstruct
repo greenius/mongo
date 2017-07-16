@@ -2486,7 +2486,7 @@ def doConfigure(myenv):
             #error
             #endif
             """
-            context.Message('Checking for glibc with non-broken _FORTIFY_SOURCE...')
+            context.Message('Checking for predefined _FORTIFY_SOURCE...')
             ret = context.TryCompile(textwrap.dedent(test_body), ".c")
             context.Result(ret)
             return ret
