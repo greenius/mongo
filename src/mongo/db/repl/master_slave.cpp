@@ -190,7 +190,7 @@ BSONObj ReplSource::jsobj() {
 }
 
 void ReplSource::ensureMe(OperationContext* opCtx) {
-		std::string myname = getHostName();
+    std::string myname = getHostName();
 
     // local.me is an identifier for a server for getLastError w:2+
     bool exists = Helpers::getSingleton(opCtx, "local.me", _me);
@@ -399,7 +399,7 @@ public:
 } handshakeCmd;
 
 bool replHandshake(DBClientConnection* conn, const OID& myRID) {
-		std::string myname = getHostName();
+    std::string myname = getHostName();
 
     BSONObjBuilder cmd;
     cmd.append("handshake", myRID);
@@ -450,7 +450,7 @@ void ReplSource::forceResync(OperationContext* opCtx, const char* requester) {
         BSONElement e = i.next();
         if (e.eoo())
             break;
-				std::string name = e.embeddedObject().getField("name").valuestr();
+        std::string name = e.embeddedObject().getField("name").valuestr();
         if (!e.embeddedObject().getBoolField("empty")) {
             if (name != "local") {
                 if (only.empty() || only == name) {
@@ -822,7 +822,7 @@ void ReplSource::_sync_pullOpLog_applyOperation(OperationContext* opCtx,
 }
 
 void ReplSource::syncToTailOfRemoteLog() {
-		std::string _ns = ns();
+    std::string _ns = ns();
     BSONObjBuilder b;
     if (!only.empty()) {
         b.appendRegex("ns", std::string("^") + pcrecpp::RE::QuoteMeta(only));
@@ -873,7 +873,7 @@ public:
 */
 int ReplSource::_sync_pullOpLog(OperationContext* opCtx, int& nApplied) {
     int okResultCode = restartSyncAfterSleep;
-		std::string ns = std::string("local.oplog.$") + sourceName();
+    std::string ns = std::string("local.oplog.$") + sourceName();
     LOG(2) << "sync_pullOpLog " << ns << " syncedTo:" << syncedTo.toStringLong() << '\n';
 
     bool tailing = true;
@@ -893,7 +893,7 @@ int ReplSource::_sync_pullOpLog(OperationContext* opCtx, int& nApplied) {
                 BSONElement e = i.next();
                 if (e.eoo())
                     break;
-								std::string name = e.embeddedObject().getField("name").valuestr();
+                std::string name = e.embeddedObject().getField("name").valuestr();
                 if (!e.embeddedObject().getBoolField("empty")) {
                     if (name != "local") {
                         if (only.empty() || only == name) {
@@ -978,7 +978,7 @@ int ReplSource::_sync_pullOpLog(OperationContext* opCtx, int& nApplied) {
         BSONObj op = oplogReader.nextSafe();
         BSONElement ts = op.getField("ts");
         if (ts.type() != Date && ts.type() != bsonTimestamp) {
-						std::string err = op.getStringField("$err");
+            std::string err = op.getStringField("$err");
             if (!err.empty()) {
                 // 13051 is "tailable cursor requested on non capped collection"
                 if (op.getIntField("code") == 13051) {
@@ -1283,7 +1283,7 @@ static void replMain(OperationContext* opCtx) {
         if (s) {
             stringstream ss;
             ss << "sleep " << s << " sec before next pass";
-						std::string msg = ss.str();
+            std::string msg = ss.str();
             if (!serverGlobalParams.quiet.load())
                 log() << msg << endl;
             ReplInfo r(msg.c_str());
